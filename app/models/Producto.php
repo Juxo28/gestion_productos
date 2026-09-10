@@ -12,7 +12,15 @@ class Producto {
     }
 
     public function getAll(){
-        $sql = "SELECT * FROM producto";
+        $sql = "SELECT 
+            producto.id,
+            producto.nombre,
+            producto.precio,
+            producto.categoria,
+            proveedor.nombre AS proveedor
+            FROM producto
+            INNER JOIN proveedor 
+            ON producto.id_proveedor = proveedor.id";
 
         $consulta = $this->connection->query($sql);
 
