@@ -10,23 +10,23 @@ class Producto {
         $database = new Database();
         $this->connection = $database->connect();
     }
+public function getAll(){
+    $sql = "SELECT 
+        producto.id,
+        producto.nombre,
+        producto.precio,
+        categoria.nombre AS categoria,
+        proveedor.nombre AS proveedor
+        FROM producto
+        INNER JOIN proveedor 
+            ON producto.id_proveedor = proveedor.id
+        INNER JOIN categoria 
+            ON producto.id_categoria = categoria.id";
 
-    public function getAll(){
-        $sql = "SELECT 
-            producto.id,
-            producto.nombre,
-            producto.precio,
-            producto.categoria,
-            proveedor.nombre AS proveedor
-            FROM producto
-            INNER JOIN proveedor 
-            ON producto.id_proveedor = proveedor.id";
+    $consulta = $this->connection->query($sql);
 
-        $consulta = $this->connection->query($sql);
-
-        return $consulta->fetchAll(PDO::FETCH_ASSOC);
-    }
-
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
     public function getById($id)
 {
     $sql = "SELECT * FROM producto WHERE id = $id";
