@@ -11,3 +11,4 @@ $clientesController->index();
 
 $proveedorController = new ProveedorController();
 $proveedorController->index();
+
