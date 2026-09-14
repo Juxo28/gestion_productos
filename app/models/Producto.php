@@ -2,7 +2,8 @@
 
 require_once __DIR__ . "/../../config/Database.php";
 
-class Producto {
+class Producto
+{
     private $connection;
 
     public function __construct()
@@ -10,8 +11,9 @@ class Producto {
         $database = new Database();
         $this->connection = $database->connect();
     }
-public function getAll(){
-    $sql = "SELECT 
+    public function getAll()
+    {
+        $sql = "SELECT 
         producto.id,
         producto.nombre,
         producto.precio,
@@ -23,16 +25,20 @@ public function getAll(){
         INNER JOIN categoria 
             ON producto.id_categoria = categoria.id";
 
-    $consulta = $this->connection->query($sql);
+        $consulta = $this->connection->query($sql);
 
-    return $consulta->fetchAll(PDO::FETCH_ASSOC);
-}
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
     public function getById($id)
-{
-    $sql = "SELECT * FROM producto WHERE id = $id";
+    {
+        $sql = "SELECT * FROM producto WHERE id = :id";
 
-    $consulta = $this->connection->query($sql);
+        $consulta = $this->connection->prepare($sql);
 
-    return $consulta->fetch(PDO::FETCH_ASSOC);
-}
+        $consulta->bindParam(":id",$id);
+
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
